@@ -9,19 +9,14 @@ import asyncio
 
 
 baseurl = input("type base url: ")
-tasks_limit = 2
+tasks_limit = 10
 
-redirect_urls = []
-current_list = []
-crawled_list = []
-UrlDatabase = []
-task_queue = []
-new_urls = []
+redirect_urls = set()
+current_list = set()
+crawled_list = set()
 
-current_list.append(baseurl)
+current_list.add(baseurl)
 
-
-urls_count = 0
 my_headers = {
   "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.62 Safari/537.36",
   "Connection":"close"
@@ -30,36 +25,15 @@ my_headers = {
 def get_task_limit(length):
     return length if length < tasks_limit else tasks_limit
 
-def is_parameterized(url):
-    return url.find("?")
-
-def updateCurrentList():
-    global new_urls
-    new_urls = removeDuplicate()
-    for url in new_urls:
-        if url not in crawled_list and url not in current_list:
-            current_list.append(url)
-    new_urls.clear()
-
-def removeDuplicate():
-    return list(dict.fromkeys(new_urls))
-
-
 def has_redirect_param(url):
     return url.find("redirect")
     
 
 async def request(url):
-    global urls_count
-
-    crawled_list.append(url)
-    current_list.remove(url)
-
-    if is_parameterized(url) != -1:
-        UrlDatabase.append(url)
+    crawled_list.add(url)
 
     if has_redirect_param(url) != -1:
-        redirect_urls.append(url)
+        redirect_urls.add(url)
 
     if not url.startswith("http"):
         url = "https://" + url
@@ -70,8 +44,8 @@ async def request(url):
             if response.headers["Content-Type"].split(';')[0] == "text/html":
                 text = await response.text()
                 urls = PyHtmlParser.parser(baseurl, text)
-            for url in urls:
-                new_urls.append(url)
+                for url in urls:
+                    current_list.add(url)
     except:
         print("ERROR 404")
 
@@ -82,7 +56,6 @@ async def waitForTaskCompletion(_task_queue):
             await asyncio.wait_for(task, timeout=5)
         except TimeoutError:
             print("sorry! Timeout Error")
-    updateCurrentList()
 
         
 
@@ -94,11 +67,10 @@ async def main():
         tasks = []
 
         for i in range(0, get_task_limit(len(current_list))):
-            task = asyncio.create_task(request(current_list[i]))
+            task = asyncio.create_task(request(current_list.pop()))
             tasks.append(task)
 
         await asyncio.gather(*tasks)
-        updateCurrentList()
 
     print(f"we have found {len(crawled_list)} urls")
     print(f"we have found {len(redirect_urls)} redirect param urls")
