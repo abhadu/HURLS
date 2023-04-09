@@ -45,10 +45,10 @@ async def request(url):
             if response.headers["Content-Type"].split(';')[0] == "text/html":
                 text = await response.text()
                 urls = urlValidator.get_validatedAll(PyHtmlParser.parse(text))
+		crawled_list.add(_url.url)
                 for url in urls:
                     _url = urlFilter.filter(url, response.headers, response.status)
                     if _url:
-                        crawled_list.add(_url.url)
                         print_url(_url)
                         current_list.add(_url.url)
     except Exception as e:
