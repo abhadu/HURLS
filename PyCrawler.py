@@ -10,9 +10,14 @@ def get_task_limit(length):
     return length if length < tasks_limit else tasks_limit
 
 def print_url(url):
-    colors = [Back.BLUE, Back.YELLOW]
-    for i in range(0, len(url.filters)):
-        print(colors[i], url.filters[i], end=" ")
+    status_colors = {200:Back.GREEN, 400:Back.RED, 404:Back.RED, 302:Back.LIGHTRED_EX}
+
+    for filter in url.filters:
+        if isinstance(filter, int):
+            print(status_colors.get(filter), filter, end=" ")
+        else: 
+            print(Back.BLUE, filter, end=" ")
+
     print(Back.RESET, end=" ")
     print(url.url, end="\n\n")
 
@@ -44,15 +49,18 @@ async def request(url):
         async with aiohttp.request('GET',url) as response:
             if response.headers["Content-Type"].split(';')[0] == "text/html":
                 text = await response.text()
+
                 urls = urlValidator.get_validatedAll(PyHtmlParser.parse(text))
+                _url = urlFilter.filter(url, response.headers, response.status)
+
+                if _url:
+                    crawled_list.add(_url.url)
+                    print_url(_url)
+
                 for url in urls:
-                    _url = urlFilter.filter(url, response.headers, response.status)
-                    if _url:
-                        crawled_list.add(_url.url)
-                        print_url(_url)
-                        current_list.add(_url.url)
-    except Exception as e:
-        print(Back.RED, e, Back.RESET)
+                    current_list.add(url)
+    except:
+        pass
 
 
 async def waitForTaskCompletion(_task_queue, wait):
