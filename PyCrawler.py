@@ -23,7 +23,7 @@ def print_url(url):
 
 
 baseUrl = input("type base url: ")
-tasks_limit = 20
+tasks_limit = 10
 wait = 5
 
 current_list = set()
