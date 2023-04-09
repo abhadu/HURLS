@@ -10,11 +10,10 @@ class UrlFilter():
         for url in urls:
             if self.has_baseurl(url):
                 _urls.add(url)
-
         return _urls
 
     # filter out urls that has base url
     def has_baseurl(self, url):
-        if url.startswith(self.baseurl):
+        if url.startswith(self.baseUrl):
             return True
         return False

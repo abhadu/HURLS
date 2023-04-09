@@ -1,21 +1,18 @@
 from html.parser import HTMLParser
-from socketserver import BaseRequestHandler
-import re
 
 class PyHtmlParser(HTMLParser):
     instance = None
-    def __init__(self, baseurl):
+    def __init__(self, baseUrl):
         super(PyHtmlParser, self).__init__()
         self.links = []
-        self.baseurl = baseurl
+        self.baseUrl = baseUrl
 
     def handle_starttag(self, tag, attrs):
-        if tag == "a" or tag == "link":
+        if tag == "a":
             for attr in attrs:
                 type, url = attr
                 if type == "href":
                     self.links.append(url)
-        return
                     
         
     def get_urls(self):
@@ -24,8 +21,8 @@ class PyHtmlParser(HTMLParser):
         return links
 
     @staticmethod
-    def parser(base_url, html):
+    def parse(baseUrl, html):
         if PyHtmlParser.instance is None:
-            PyHtmlParser.instance = PyHtmlParser(base_url)
+            PyHtmlParser.instance = PyHtmlParser(baseUrl)
         PyHtmlParser.instance.feed(html)
         return PyHtmlParser.instance.get_urls()

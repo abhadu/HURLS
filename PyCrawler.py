@@ -4,15 +4,25 @@ from htmlParser import PyHtmlParser
 import asyncio
 
 
-baseurl = input("type base url: ")
+def get_task_limit(length):
+    return length if length < tasks_limit else tasks_limit
+   
+def validate_url(url):
+    if not url.startswith("http"):
+        url = "https://" + url
+    return url
+
+
+baseUrl = input("type base url: ")
+baseUrl = validate_url(baseUrl)
 tasks_limit = 20
 wait = 5
 
 current_list = set()
 crawled_list = set()
-urlFilter = UrlFilter(baseurl)
+urlFilter = UrlFilter(baseUrl)
 
-current_list.add(baseurl)
+current_list.add(baseUrl)
 
 headers = {
   "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.62 Safari/537.36",
@@ -20,26 +30,17 @@ headers = {
 }
 
 
-def get_task_limit(length):
-    return length if length < tasks_limit else tasks_limit
-   
-def validate_url(url):
-    if not url.startswith("http"):
-        url = "https://" + url
-
-validate_url(baseurl)
-
 async def request(url):
     crawled_list.add(url)
 
-    validate_url(url)
+    url = validate_url(url)
 
     print(url)
     try:
         async with aiohttp.request('GET',url) as response:
             if response.headers["Content-Type"].split(';')[0] == "text/html":
                 text = await response.text()
-                urls = urlFilter.filter(PyHtmlParser.parser(baseurl, text))
+                urls = urlFilter.filter(PyHtmlParser.parse(baseUrl, text))
                 for url in urls:
                     current_list.add(url)
     except:
