@@ -14,7 +14,7 @@ class PyHtmlParser(HTMLParser):
             for attr in attrs:
                 type, url = attr
                 if type == "href":
-                    self.links.append(self.url)
+                    self.links.append(url)
         return
                     
         
