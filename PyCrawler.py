@@ -1,5 +1,6 @@
 import aiohttp
 from UrlFilter import UrlFilter
+from UrlValidator import UrlValiator
 from htmlParser import PyHtmlParser
 from colorama import Fore, Back
 import asyncio
@@ -7,11 +8,6 @@ import asyncio
 
 def get_task_limit(length):
     return length if length < tasks_limit else tasks_limit
-   
-def validate_url(url):
-    if not url.startswith("http"):
-        url = "https://" + url
-    return url
 
 def print_url(url):
     colors = [Back.BLUE, Back.YELLOW]
@@ -22,14 +18,18 @@ def print_url(url):
 
 
 baseUrl = input("type base url: ")
-baseUrl = validate_url(baseUrl)
 tasks_limit = 20
 wait = 5
 
 current_list = set()
-current_list.add(baseUrl)
 crawled_list = set()
 filters = {} 
+
+urlValidator = UrlValiator()
+baseUrl = urlValidator.get_validated(baseUrl, True)
+urlValidator.set_baseUrl(baseUrl)
+
+current_list.add(baseUrl)
 urlFilter = UrlFilter(baseUrl, filters)
 
 headers = {
@@ -40,13 +40,11 @@ headers = {
 
 async def request(url):
 
-    url = validate_url(url)
-
     try:
         async with aiohttp.request('GET',url) as response:
             if response.headers["Content-Type"].split(';')[0] == "text/html":
                 text = await response.text()
-                urls = PyHtmlParser.parse(text)
+                urls = urlValidator.get_validatedAll(PyHtmlParser.parse(text))
                 for url in urls:
                     _url = urlFilter.filter(url, response.headers, response.status)
                     if _url:
@@ -54,20 +52,16 @@ async def request(url):
                         print_url(_url)
                         current_list.add(_url.url)
     except Exception as e:
-        print("ERROR 404", e)
+        print(Back.RED, e, Back.RESET)
 
 
 async def waitForTaskCompletion(_task_queue, wait):
     for task in _task_queue:
-        try:
-            await asyncio.wait_for(task, timeout=wait)
-        except TimeoutError:
-            print("sorry! Timeout Error")
+        await asyncio.wait_for(task, timeout=wait)
 
         
 
 async def main():
-    global urls_count
     global current_list
     global crawled_list
 
@@ -77,13 +71,14 @@ async def main():
             task = asyncio.create_task(request(current_list.pop()))
             tasks.append(task)
 
-        await waitForTaskCompletion(tasks, wait)
+        try: 
+            await waitForTaskCompletion(tasks, wait) 
+        except: 
+            print(Back.RED, "getting error!" , Back.RESET)
+
         current_list = current_list.difference(crawled_list)
 
-    print(f"we have found {len(crawled_list)} urls")
-    
-        
-
+    print(Back.GREEN, f"{len(crawled_list)} urls found!", Back.RESET)
     
 
 asyncio.run(main())
