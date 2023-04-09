@@ -1,6 +1,7 @@
 import aiohttp
 from UrlFilter import UrlFilter
 from htmlParser import PyHtmlParser
+from colorama import Fore, Back
 import asyncio
 
 
@@ -12,6 +13,13 @@ def validate_url(url):
         url = "https://" + url
     return url
 
+def print_url(url):
+    colors = [Back.BLUE, Back.YELLOW]
+    for i in range(0, len(url.filters)):
+        print(colors[i], url.filters[i], end=" ")
+    print(Back.RESET, end=" ")
+    print(url.url, end="\n\n")
+
 
 baseUrl = input("type base url: ")
 baseUrl = validate_url(baseUrl)
@@ -19,10 +27,10 @@ tasks_limit = 20
 wait = 5
 
 current_list = set()
-crawled_list = set()
-urlFilter = UrlFilter(baseUrl)
-
 current_list.add(baseUrl)
+crawled_list = set()
+filters = {} 
+urlFilter = UrlFilter(baseUrl, filters)
 
 headers = {
   "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.62 Safari/537.36",
@@ -31,20 +39,22 @@ headers = {
 
 
 async def request(url):
-    crawled_list.add(url)
 
     url = validate_url(url)
 
-    print(url)
     try:
         async with aiohttp.request('GET',url) as response:
             if response.headers["Content-Type"].split(';')[0] == "text/html":
                 text = await response.text()
-                urls = urlFilter.filter(PyHtmlParser.parse(baseUrl, text))
+                urls = PyHtmlParser.parse(text)
                 for url in urls:
-                    current_list.add(url)
-    except:
-        print("ERROR 404")
+                    _url = urlFilter.filter(url, response.headers, response.status)
+                    if _url:
+                        crawled_list.add(_url.url)
+                        print_url(_url)
+                        current_list.add(_url.url)
+    except Exception as e:
+        print("ERROR 404", e)
 
 
 async def waitForTaskCompletion(_task_queue, wait):
