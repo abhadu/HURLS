@@ -19,18 +19,20 @@ headers = {
   "Connection":"close"
 }
 
-if not baseurl.startswith("http"):
-        baseurl = "https://" + baseurl
 
 def get_task_limit(length):
     return length if length < tasks_limit else tasks_limit
    
+def validate_url(url):
+    if not url.startswith("http"):
+        url = "https://" + url
+
+validate_url(baseurl)
 
 async def request(url):
     crawled_list.add(url)
 
-    if not url.startswith("http"):
-        url = "https://" + url
+    validate_url(url)
 
     print(url)
     try:
