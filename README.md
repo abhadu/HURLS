@@ -3,9 +3,9 @@
   <img src="https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg" alt="Sublime's custom image"/>
 </p>
 
-<p align="center">
-  # Advance Python Crawler
-</p>
+<h2 align="center">
+  Advance Python Crawler
+</h2>
 
 ![](https://img.shields.io/badge/-in--progress-green)
 
