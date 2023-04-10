@@ -1,5 +1,6 @@
 # HURLS
-https://img.shields.io/badge/-in--progress-green
+![img]https://img.shields.io/badge/-in--progress-green
+
 Advanced python crawler to crawl urls from websites
 
 ## Demo
