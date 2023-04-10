@@ -1,7 +1,7 @@
 
 <p align="center">
   
-  <img src="https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg" alt="image"/>
+  <img src="https://github.com/reactDevCloud/WebCrawler/blob/master/logo.svg" alt="image"/>
   
 </p>
 
