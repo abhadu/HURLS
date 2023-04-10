@@ -11,6 +11,9 @@ import asyncio
 def get_task_limit(length):
     return length if length < tasks_limit else tasks_limit
 
+def print_result():
+    print(Back.GREEN, f"{len(crawled_list)} urls found!", Back.RESET)
+
 def print_url(url):
     status_colors = {200:Back.GREEN, 400:Back.RED, 404:Back.RED, 302:Back.LIGHTRED_EX}
 
@@ -93,17 +96,20 @@ async def main():
         tasks.clear()
         current_list = current_list.difference(crawled_list)
 
-    print(Back.GREEN, f"{len(crawled_list)} urls found!", Back.RESET)
+    print_result()
+    
 
     
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
+        print_result()
         sys.exit(0)
     except Exception as e:
-        print("getting error", file=sys.stderr)
+        print(Back.RED, "getting error: " + e, Back.RESET)
 
+    
 
     
     
