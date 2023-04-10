@@ -4,9 +4,7 @@
 </p>
 
 <p align="center">
-  
   # Advance Python Crawler
-
 </p>
 
 ![](https://img.shields.io/badge/-in--progress-green)
