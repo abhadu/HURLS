@@ -1,9 +1,12 @@
 
 <p align="center">
   <img src="https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg" alt="Sublime's custom image"/>
+</p>
+
+<p align="center">
   
   # Advance Python Crawler
-  
+
 </p>
 
 ![](https://img.shields.io/badge/-in--progress-green)
