@@ -1,5 +1,7 @@
 <div style="text-align: center;">
+  
   ![Gopher image](https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg)
+  
 </div>
 
 ![Gopher image](https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg)
