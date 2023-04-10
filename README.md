@@ -21,7 +21,7 @@ https://user-images.githubusercontent.com/66458518/230904997-ac816b23-cf07-43e3-
 Install using git
 
 ```bash
-  git clone https://github.com/reactDevCloud/WebCrawler
+  [git clone https://github.com/reactDevCloud/WebCrawler](https://github.com/reactDevCloud/WebCrawler.git)
 
   cd WebCrawler
   
