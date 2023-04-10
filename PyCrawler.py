@@ -1,3 +1,5 @@
+import argparse
+import sys
 import aiohttp
 from UrlFilter import UrlFilter
 from UrlValidator import UrlValiator
@@ -21,15 +23,24 @@ def print_url(url):
     print(Back.RESET, end=" ")
     print(url.url, end="\n\n")
 
+def init_args(parser: argparse.ArgumentParser):
+    parser.add_argument("-u", type=str, required=True, help="name of the baseUrl which will be crawled", dest="baseUrl")
+    parser.add_argument("-status", type=int, action="extend", help="status to filter", nargs="+")
+    parser.add_argument("-tl", type=int, help="number of async tasks to run", default=10, dest="tasksLimit")
+    parser.add_argument("-w", type=int, help="waiting time for the request", default=5, dest="wait")
 
-baseUrl = input("type base url: ")
-tasks_limit = 10
-wait = 5
+parser = argparse.ArgumentParser("HURLS", description="hunt urls over the web")
+init_args(parser)
+
+args = parser.parse_args()
+baseUrl = args.baseUrl
+tasks_limit = args.tasksLimit
+wait = args.wait
+filters = {"status":args.status}
 
 current_list = set()
 crawled_list = set()
-filters = {} 
-
+ 
 urlValidator = UrlValiator()
 baseUrl = urlValidator.get_validated(baseUrl, True)
 urlValidator.set_baseUrl(baseUrl)
@@ -78,18 +89,20 @@ async def main():
         for _ in range(0, get_task_limit(len(current_list))):
             task = asyncio.create_task(request(current_list.pop()))
             tasks.append(task)
-
-        try: 
-            await waitForTaskCompletion(tasks, wait) 
-        except: 
-            print(Back.RED, "getting error!" , Back.RESET)
-
+        await waitForTaskCompletion(tasks, wait) 
+        tasks.clear()
         current_list = current_list.difference(crawled_list)
 
     print(Back.GREEN, f"{len(crawled_list)} urls found!", Back.RESET)
     
-
-asyncio.run(main())
+    
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        sys.exit(0)
+    except Exception as e:
+        print(e)
 
 
     
