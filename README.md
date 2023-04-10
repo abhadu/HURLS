@@ -1,8 +1,7 @@
-<div style="width:50%; margin:auto;">
-  
-  ![Gopher image](https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg)
-  
-</div>
+
+<p align="center">
+  <img src="https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg" alt="Sublime's custom image"/>
+</p>
 
 ![](https://img.shields.io/badge/-in--progress-green)
 
