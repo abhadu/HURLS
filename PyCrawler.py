@@ -94,7 +94,7 @@ async def main():
         current_list = current_list.difference(crawled_list)
 
     print(Back.GREEN, f"{len(crawled_list)} urls found!", Back.RESET)
-    
+
     
 if __name__ == "__main__":
     try:
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         sys.exit(0)
     except Exception as e:
-        print(e)
+        print("getting error", file=sys.stderr)
 
 
     
