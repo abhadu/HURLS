@@ -1,13 +1,15 @@
 
 <p align="center">
   <img src="https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg" alt="Sublime's custom image"/>
+  
+  ![](https://img.shields.io/badge/-in--progress-green)
+  
 </p>
 
 <h2 align="center">
   Advance Python Crawler
 </h2>
 
-![](https://img.shields.io/badge/-in--progress-green)
 
 Advanced python crawler to crawl urls from websites
 
