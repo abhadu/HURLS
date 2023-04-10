@@ -1,4 +1,4 @@
-<div style="text-align: center;">
+<div style="width:50%; margin:auto;">
   
   ![Gopher image](https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg)
   
