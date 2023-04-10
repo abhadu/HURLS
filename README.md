@@ -3,7 +3,9 @@
   <img src="https://github.com/reactDevCloud/WebCrawler/blob/master/Group%202.svg" alt="Sublime's custom image"/>
   
   <p align="center">
+    
     ![](https://img.shields.io/badge/-in--progress-green)
+    
   </p>
   
 </p>
