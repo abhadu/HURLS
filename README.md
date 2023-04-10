@@ -1,4 +1,4 @@
-# HURLS - 
+# HURLS
 ### Advanced python crawler to crawl urls from websites
 
 ## Demo
