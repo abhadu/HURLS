@@ -9,6 +9,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/-in--progress-green" alt="" />
+  <img src="https://img.shields.io/badge/contributions-welcome-blue" alt="" />
 </p>
 
 ## Demo
