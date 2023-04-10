@@ -1,10 +1,6 @@
+# HURLS
 
-![Logo](https://i.ibb.co/M2QC39c/Group-2-1.png)
-
-
-## Website Urls Crawler using python.
-
-
+## Advanced python crawler to crawl urls from websites
 
 ## Demo
 
