@@ -30,5 +30,5 @@ Install using git
 
   cd WebCrawler
   
-  python PyCrawler.py
+  python PyCrawler.py -h
 ```
