@@ -14,9 +14,9 @@
 </p>
 
 ## Features
-### Active scanning to find urls.
-### Active scanning to find subdomain urls.
-### showing status of urls.
+* Active scanning to find urls.
+* Active scanning to find subdomain urls.
+* showing status of urls.
 
 ## Demo
 
