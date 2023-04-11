@@ -19,9 +19,7 @@
 * ### showing status of urls.
 
 ## Demo
-
-https://user-images.githubusercontent.com/66458518/230904997-ac816b23-cf07-43e3-a7ac-967e65dab602.mp4
-
+https://user-images.githubusercontent.com/66458518/231100606-66dd6df6-f2c6-4b5a-a8bf-6ba3a61cd400.mp4
 
 ## Installation
 
