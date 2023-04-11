@@ -28,9 +28,10 @@ def print_url(url):
 
 def init_args(parser: argparse.ArgumentParser):
     parser.add_argument("-u", type=str, required=True, help="name of the baseUrl which will be crawled", dest="baseUrl")
-    parser.add_argument("-status", type=int, action="extend", help="status to filter", nargs="+")
+    parser.add_argument("-status", type=int, action="extend", default=None, help="status to filter", nargs="+")
     parser.add_argument("-tl", type=int, help="number of async tasks to run", default=10, dest="tasksLimit")
     parser.add_argument("-w", type=int, help="waiting time for the request", default=5, dest="wait")
+    parser.add_argument("-sub", type=str, help="find subdomain", default=None)
 
 parser = argparse.ArgumentParser("HURLS", description="hunt urls over the web")
 init_args(parser)
@@ -39,7 +40,7 @@ args = parser.parse_args()
 baseUrl = args.baseUrl
 tasks_limit = args.tasksLimit
 wait = args.wait
-filters = {"status":args.status}
+filters = {"status":args.status, "sub":args.sub}
 
 current_list = set()
 crawled_list = set()
@@ -56,8 +57,9 @@ headers = {
   "Connection":"close"
 }
 
-
 async def request(url):
+    global crawled_list
+    global current_list
 
     try:
         async with aiohttp.request('GET',url) as response:
@@ -68,8 +70,9 @@ async def request(url):
                 _url = urlFilter.filter(url, response.headers, response.status)
 
                 if _url:
+                    if _url.url not in crawled_list:
+                        print_url(_url)
                     crawled_list.add(_url.url)
-                    print_url(_url)
 
                 for url in urls:
                     current_list.add(url)
@@ -107,11 +110,4 @@ if __name__ == "__main__":
         print_result()
         sys.exit(0)
     except Exception as e:
-        print(Back.RED, "getting error: " + e, Back.RESET)
-
-    
-
-    
-    
-	  
-    
+        print(Back.RED, "getting error: " + str(e), Back.RESET)
