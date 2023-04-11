@@ -5,7 +5,7 @@
 </p>
 
 <h2 align="center">
-  Advance Python Crawler
+  Advanced Python Crawler
 </h2>
 
 <p align="center">
