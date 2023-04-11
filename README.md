@@ -14,7 +14,11 @@
 </p>
 
 ## Features
+Active scanning to find url.
 
+Active scanning to find subdomain url.
+
+showing status of url.
 
 ## Demo
 
