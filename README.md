@@ -26,9 +26,9 @@ https://user-images.githubusercontent.com/66458518/231100606-66dd6df6-f2c6-4b5a-
 Install using git
 
 ```bash
-  git clone https://github.com/reactDevCloud/WebCrawler
+  git clone https://github.com/reactDevCloud/HURLS
 
-  cd WebCrawler
+  cd HURLS
   
   python PyCrawler.py -h
 ```
