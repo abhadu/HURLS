@@ -62,7 +62,7 @@ async def request(url):
     global current_list
 
     try:
-        async with aiohttp.request('GET',url) as response:
+        async with aiohttp.request('GET', url, timeout=aiohttp.ClientTimeout(total=wait)) as response:
             if response.headers["Content-Type"].split(';')[0] == "text/html":
                 text = await response.text()
 
@@ -80,26 +80,21 @@ async def request(url):
         pass
 
 
-async def waitForTaskCompletion(_task_queue, wait):
-    for task in _task_queue:
-        await asyncio.wait_for(task, timeout=wait)
-
-        
-
 async def main():
     global current_list
     global crawled_list
 
     tasks = []
-    while current_list:
+    while len(current_list):
         for _ in range(0, get_task_limit(len(current_list))):
             task = asyncio.create_task(request(current_list.pop()))
             tasks.append(task)
-        await waitForTaskCompletion(tasks, wait) 
+        await asyncio.gather(*tasks)
         tasks.clear()
         current_list = current_list.difference(crawled_list)
 
     print_result()
+    print(len(current_list), ":", len(crawled_list))
     
 
     
